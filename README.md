@@ -45,9 +45,9 @@ A esteira (`.github/workflows/ci.yml`) executa, a cada push/PR para `main`:
 1. Checkout do código (`actions/checkout@v4`)
 2. Setup do .NET (`actions/setup-dotnet@v4`)
 3. Build da imagem Docker (`docker build`)
-4. Análise estática (`dotnet format --verify-no-changes`)
+4. Análise estática (`dotnet format --verify-no-changes --report ./TestResults`, gerando `format-report.json`)
 5. Execução dos testes com cobertura (`dotnet test --collect:"XPlat Code Coverage"`)
-6. Publicação de evidências (relatório de testes `.trx` e cobertura `coverage.cobertura.xml` como artifacts)
+6. Publicação de evidências (relatório do linter `format-report.json`, relatório de testes `.trx` e cobertura `coverage.cobertura.xml` como artifacts)
 
 ## Tipos de testes implementados
 - **Testes unitários** (`CalculadoraTests.cs`): cálculo da média, aprovação, reprovação, validação de notas inválidas.
@@ -57,6 +57,8 @@ A esteira (`.github/workflows/ci.yml`) executa, a cada push/PR para `main`:
 ## Evidências
 - Execução da pipeline no GitHub Actions: https://github.com/enzoblousa/RED_Ensino_Domiciliar/actions/runs/27924637273
 - Log de testes passando localmente: ver `evidencias/correcao-teste.txt`
+- Screenshot da execução da pipeline: `evidencias/EvidenciaFalha1.png` (print da run do GitHub Actions)
+- Relatório do linter: `format-report.json`, gerado pelo `dotnet format --report` e publicado como artifact `evidencias-pipeline` em cada execução
 
 ## Falha simulada e correção
 Para demonstrar que a esteira detecta defeitos, a regra de aprovação foi temporariamente alterada de `média >= 6` para `média > 6` em `Calculadora.cs`. Isso quebrou dois testes que verificam o caso de borda (média exatamente 6.0): o teste de aprovação no limite e o teste de regressão da nota de corte. O log completo da falha está em `evidencias/falha-teste.txt`. Após reverter a alteração, os testes voltaram a passar — log completo em `evidencias/correcao-teste.txt`.

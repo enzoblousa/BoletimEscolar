@@ -26,12 +26,12 @@ jobs:
         run: dotnet restore MediaEscolar.sln
 
       - name: Analise estatica (dotnet format)
-        run: dotnet format MediaEscolar.sln --verify-no-changes
+        run: dotnet format MediaEscolar.sln --verify-no-changes --report ./TestResults
 
       - name: Executar testes com cobertura
         run: dotnet test MediaEscolar.sln --logger "trx;LogFileName=test-results.trx" --collect:"XPlat Code Coverage" --results-directory ./TestResults
 
-      - name: Publicar evidencias (resultados de teste e cobertura)
+      - name: Publicar evidencias (relatorio do linter, resultados de teste e cobertura)
         if: always()
         uses: actions/upload-artifact@v4
         with:
