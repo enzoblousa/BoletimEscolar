@@ -47,7 +47,8 @@ A esteira (`.github/workflows/ci.yml`) executa, a cada push/PR para `main`:
 3. Build da imagem Docker (`docker build`)
 4. Análise estática (`dotnet format --verify-no-changes --report ./TestResults`, gerando `format-report.json`)
 5. Execução dos testes com cobertura (`dotnet test --collect:"XPlat Code Coverage"`)
-6. Publicação de evidências (relatório do linter `format-report.json`, relatório de testes `.trx` e cobertura `coverage.cobertura.xml` como artifacts)
+6. Captura automática de screenshot: sobe o container da imagem buildada, executa o fluxo cadastro → notas → consulta via `curl` e usa o Playwright (Chromium headless) para fotografar o JSON final em `screenshot-execucao.png`
+7. Publicação de evidências (relatório do linter, relatório de testes, cobertura e screenshot como artifacts)
 
 ## Tipos de testes implementados
 - **Testes unitários** (`CalculadoraTests.cs`): cálculo da média, aprovação, reprovação, validação de notas inválidas.
@@ -58,6 +59,7 @@ A esteira (`.github/workflows/ci.yml`) executa, a cada push/PR para `main`:
 - Execução da pipeline no GitHub Actions: https://github.com/enzoblousa/RED_Ensino_Domiciliar/actions/runs/27924637273
 - Log de testes passando localmente: ver `evidencias/correcao-teste.txt`
 - Relatório do linter: `format-report.json`, gerado pelo `dotnet format --report` e publicado como artifact `evidencias-pipeline` em cada execução
+- Screenshot da execução: `screenshot-execucao.png`, gerado automaticamente em cada execução (sem intervenção manual) e publicado no artifact `evidencias-pipeline` — baixável na página da run correspondente em GitHub Actions
 
 ## Falha simulada e correção
 Para demonstrar que a esteira detecta defeitos, a regra de aprovação foi temporariamente alterada de `média >= 6` para `média > 6` em `Calculadora.cs`. Isso quebrou dois testes que verificam o caso de borda (média exatamente 6.0): o teste de aprovação no limite e o teste de regressão da nota de corte. O log completo da falha está em `evidencias/falha-teste.txt`. Após reverter a alteração, os testes voltaram a passar — log completo em `evidencias/correcao-teste.txt`.
