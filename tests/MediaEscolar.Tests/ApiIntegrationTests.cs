@@ -6,6 +6,7 @@ using Xunit;
 
 namespace MediaEscolar.Tests;
 
+// Teste de integração da API: sobe a aplicação em memória (WebApplicationFactory) e exercita os endpoints reais via HTTP
 public class ApiIntegrationTests : IClassFixture<WebApplicationFactory<Program>>
 {
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
@@ -16,19 +17,23 @@ public class ApiIntegrationTests : IClassFixture<WebApplicationFactory<Program>>
         _client = factory.CreateClient();
     }
 
+    // Teste de API: cobre o fluxo completo end-to-end (cadastrar aluno -> registrar notas -> consultar) validando média e situação calculadas pelo servidor
     [Fact]
     public async Task FluxoCompleto_CadastrarRegistrarNotasEConsultar_DeveRetornarMediaESituacaoCorretas()
     {
+        // Cadastra um novo aluno e espera status 201 (Created)
         var cadastroResponse = await _client.PostAsJsonAsync("/alunos", new { nome = "Maria" }, JsonOptions);
         Assert.Equal(HttpStatusCode.Created, cadastroResponse.StatusCode);
 
         var alunoCriado = await cadastroResponse.Content.ReadFromJsonAsync<AlunoCriadoDto>(JsonOptions);
         Assert.NotNull(alunoCriado);
 
+        // Registra as duas notas do aluno cadastrado e espera status 200 (OK)
         var notasResponse = await _client.PostAsJsonAsync(
             $"/alunos/{alunoCriado!.Id}/notas", new { nota1 = 8.0, nota2 = 6.0 }, JsonOptions);
         Assert.Equal(HttpStatusCode.OK, notasResponse.StatusCode);
 
+        // Consulta o aluno e verifica se a média e a situação foram calculadas corretamente pela API
         var consultaResponse = await _client.GetAsync($"/alunos/{alunoCriado.Id}");
         Assert.Equal(HttpStatusCode.OK, consultaResponse.StatusCode);
 

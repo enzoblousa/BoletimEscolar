@@ -8,7 +8,7 @@ var proximoId = 1;
 
 app.MapPost("/alunos", (CadastrarAlunoRequest request) =>
 {
-    var aluno = new Aluno { Id = proximoId++, Nome = request.Nome };
+    var aluno = new Aluno { Id = proximoId++, Nome = request.Nome};
     alunos.Add(aluno);
     return Results.Created($"/alunos/{aluno.Id}", aluno);
 });

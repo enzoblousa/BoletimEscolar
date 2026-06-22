@@ -10,6 +10,7 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     steps:
+    #checkout do código
       - name: Checkout
         uses: actions/checkout@v4
 
