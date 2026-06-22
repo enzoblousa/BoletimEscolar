@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{DD1CD7AE-DEC6-478D-8B1F-9272C57AFDE2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaEscolar.Api", "src\MediaEscolar.Api\MediaEscolar.Api.csproj", "{BDF9B537-C543-49A8-A7A7-DFA6E46888D8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{4F9DDD5D-CBEE-49FD-8F52-6AB3C03804FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaEscolar.Tests", "tests\MediaEscolar.Tests\MediaEscolar.Tests.csproj", "{3F77C066-EB65-4CC8-B237-879D57BB103E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BDF9B537-C543-49A8-A7A7-DFA6E46888D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDF9B537-C543-49A8-A7A7-DFA6E46888D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDF9B537-C543-49A8-A7A7-DFA6E46888D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDF9B537-C543-49A8-A7A7-DFA6E46888D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F77C066-EB65-4CC8-B237-879D57BB103E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F77C066-EB65-4CC8-B237-879D57BB103E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F77C066-EB65-4CC8-B237-879D57BB103E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F77C066-EB65-4CC8-B237-879D57BB103E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BDF9B537-C543-49A8-A7A7-DFA6E46888D8} = {DD1CD7AE-DEC6-478D-8B1F-9272C57AFDE2}
+		{3F77C066-EB65-4CC8-B237-879D57BB103E} = {4F9DDD5D-CBEE-49FD-8F52-6AB3C03804FD}
+	EndGlobalSection
+EndGlobal
