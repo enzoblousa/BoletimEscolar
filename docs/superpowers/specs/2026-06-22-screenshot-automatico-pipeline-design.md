@@ -10,8 +10,8 @@ Como alternativa automatizável, este design adiciona um passo na pipeline que s
 
 - Novo passo no `.github/workflows/ci.yml`, entre "Executar testes com cobertura" e "Publicar evidências".
 - Não altera o código da aplicação (`src/`) nem os testes existentes.
-- Não substitui o print manual da página do GitHub Actions — ambos coexistem, documentados separadamente no README.
-- O screenshot gerado é um artifact de cada execução (baixável na run), não é comitado no repositório.
+- **Substitui** o print manual: `evidencias/EvidenciaFalha1.png` é removido do repositório e do README; o screenshot automático passa a ser a única evidência de "screenshot da execução".
+- O screenshot gerado é um artifact de cada execução (baixável na run), não é comitado no repositório — ou seja, a evidência deixa de ser um arquivo fixo no repo e passa a ser renovada a cada execução da pipeline.
 
 ## Fluxo do novo passo
 
@@ -35,12 +35,11 @@ O arquivo `./TestResults/screenshot-execucao.png` cai na mesma pasta que já é 
 
 ## Documentação (README)
 
-Atualizar a seção "Evidências" para deixar explícitas as duas fontes de screenshot:
-- `evidencias/EvidenciaFalha1.png` — print manual da página do GitHub Actions (comitado no repo).
+Atualizar a seção "Evidências": remover a referência a `evidencias/EvidenciaFalha1.png` e descrever a nova fonte única de screenshot:
 - Artifact `evidencias-pipeline` → `screenshot-execucao.png` — print automático do JSON da API em execução, gerado a cada run (não comitado, baixado da run).
 
 ## Fora de escopo
 
-- Captura de tela da própria UI do GitHub Actions (não é tecnicamente possível de dentro do job).
-- Comitar automaticamente o screenshot gerado de volta no repositório (manteria o artifact apenas como anexo de cada run, evitando commits automáticos a cada execução).
+- Captura de tela da própria UI do GitHub Actions (não é tecnicamente possível de dentro do job — é exatamente o que este design substitui por uma evidência automatizável).
+- Comitar automaticamente o screenshot gerado de volta no repositório (mantém o artifact apenas como anexo de cada run, evitando commits automáticos a cada execução).
 - Swagger/OpenAPI UI (não está configurado no `Program.cs` atual; fora de escopo deste design).
