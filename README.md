@@ -40,6 +40,8 @@ Localmente (sem Docker), com o SDK do .NET 8 instalado:
 dotnet test MediaEscolar.sln
 ```
 
+Para entender onde os resultados (relatório de testes, cobertura, evidências) ficam salvos e como visualizar cada um, ver [`RESULTADOS-TESTES.md`](RESULTADOS-TESTES.md).
+
 ## Pipeline CI/CD
 A esteira (`.github/workflows/ci.yml`) executa, a cada push/PR para `main`:
 1. Checkout do código (`actions/checkout@v4`)

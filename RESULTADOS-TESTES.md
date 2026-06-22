@@ -1,0 +1,76 @@
+# Resultados de testes — pastas e como usá-las
+
+Este projeto produz resultados de teste em três lugares diferentes, cada um com uma finalidade e tecnologia própria. Este documento explica o que é cada um, como gerá-los/visualizá-los e onde encontrá-los.
+
+## Visão geral
+
+| Pasta / artifact | Onde fica | Comitado no git? | Gerado por |
+|---|---|---|---|
+| `TestResults/` | Local (sua máquina) e dentro do job do CI | Não (`.gitignore`) | `dotnet test` |
+| `coveragereport/` | Raiz do repositório | Sim | `reportgenerator` (manual) |
+| `evidencias/` | Raiz do repositório | Sim | Manual (capturas de log) |
+| Artifact `evidencias-pipeline` | GitHub Actions (por execução) | Não (artifact, não arquivo) | Pipeline CI/CD |
+
+## `TestResults/`
+
+Pasta criada automaticamente quando você roda os testes localmente, e também recriada do zero a cada execução da pipeline (está no `.gitignore`, então nunca é comitada).
+
+**Tecnologia:** [xUnit](https://xunit.net/) como framework de teste, executado pelo runner do VSTest (vem com o SDK do .NET), com [coverlet.collector](https://github.com/coverlet-coverage/coverlet) coletando a cobertura de código.
+
+**Como gerar:**
+```bash
+dotnet test MediaEscolar.sln --logger "trx;LogFileName=test-results.trx" --collect:"XPlat Code Coverage" --results-directory ./TestResults
+```
+
+**O que aparece dentro:**
+- `test-results.trx` — relatório dos testes (quantos passaram/falharam, tempo de execução, stack trace de falhas). Formato XML do Visual Studio Test Results.
+- `<guid>/coverage.cobertura.xml` — relatório de cobertura em formato Cobertura (dados brutos, não é para ler diretamente).
+- Na pipeline (CI), essa mesma pasta também recebe `format-report.json` (relatório do linter) e `screenshot-execucao.png` (ver seções abaixo).
+
+**Como visualizar:**
+- `.trx`: abra com o Visual Studio (`Test > Test Explorer > Open test results`) ou com a extensão "TRX Test Report" do VS Code. Também é só um XML, pode ser lido em qualquer editor de texto se for só para conferir os nomes dos testes e o resultado.
+- `coverage.cobertura.xml`: não é feito para leitura direta — use o `coveragereport/` (próxima seção) para visualizar a cobertura de forma legível.
+
+## `coveragereport/`
+
+Relatório de cobertura em HTML, navegável, gerado a partir do `coverage.cobertura.xml` acima. Diferente de `TestResults/`, **esta pasta é comitada no repositório** para servir como evidência permanente de cobertura.
+
+**Tecnologia:** [ReportGenerator](https://github.com/danielpalme/ReportGenerator) (ferramenta `dotnet-reportgenerator-globaltool`).
+
+**Como gerar/atualizar (depois de já ter rodado `dotnet test` com `--collect:"XPlat Code Coverage"`):**
+```bash
+dotnet tool install -g dotnet-reportgenerator-globaltool
+reportgenerator -reports:"TestResults/**/coverage.cobertura.xml" -targetdir:"coveragereport" -reporttypes:Html
+```
+
+**Como visualizar:** abra `coveragereport/index.html` diretamente no navegador (duplo clique no arquivo, ou `start coveragereport/index.html` no Windows). Ele mostra o percentual de cobertura por classe (`MediaEscolar.Api_Calculadora.html`, `MediaEscolar.Api_Program.html`, etc.) com as linhas cobertas/não cobertas destacadas.
+
+## `evidencias/`
+
+Pasta com evidências manuais, em texto puro, do cenário de falha simulada e correção (ver seção "Falha simulada e correção" do `README.md`).
+
+**Tecnologia:** nenhuma — são logs de saída do `dotnet test` copiados manualmente para arquivo `.txt`.
+
+**Conteúdo:**
+- `falha-teste.txt` — saída do `dotnet test` no momento em que a regra de aprovação foi quebrada de propósito (testes falhando).
+- `correcao-teste.txt` — saída do `dotnet test` depois da correção (testes passando).
+
+**Como visualizar:** são arquivos de texto simples, basta abrir em qualquer editor.
+
+## Artifact `evidencias-pipeline` (GitHub Actions)
+
+A cada execução da pipeline (`.github/workflows/ci.yml`), o passo final publica um artifact chamado `evidencias-pipeline` com o conteúdo da pasta `TestResults/` daquela execução específica — ou seja, é a versão "oficial" e mais completa dos resultados, gerada sem intervenção manual.
+
+**Conteúdo do artifact:**
+- `format-report.json` — relatório da análise estática (`dotnet format --report`).
+- `test-results.trx` — relatório de testes daquela execução.
+- `coverage.cobertura.xml` — cobertura daquela execução.
+- `screenshot-execucao.png` — print automático (via Playwright headless) do JSON retornado pela API real, depois de exercitar o fluxo cadastro → notas → consulta contra a imagem Docker buildada na própria pipeline.
+
+**Como acessar:**
+- Pela interface: abra a run em https://github.com/enzoblousa/RED_Ensino_Domiciliar/actions, role até "Artifacts" no final da página e baixe `evidencias-pipeline.zip`.
+- Pelo `gh` CLI:
+  ```bash
+  gh run list --branch main --limit 5
+  gh run download <run-id> --name evidencias-pipeline -D ./evidencias-pipeline-baixado
+  ```
