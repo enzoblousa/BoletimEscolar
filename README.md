@@ -62,8 +62,5 @@ A esteira (`.github/workflows/ci.yml`) executa, a cada push/PR para `main`:
 - Relatório do linter: `format-report.json` (em `format-style/` e `format-analyzers/`), gerado pelo `dotnet format --report` e publicado como artifact `evidencias-pipeline` em cada execução
 - Screenshot da execução: `screenshot-execucao.png`, gerado automaticamente em cada execução (sem intervenção manual) e publicado no artifact `evidencias-pipeline` — baixável na página da run correspondente em GitHub Actions
 
-## Falha simulada e correção
-Para demonstrar que a esteira detecta defeitos, a regra de aprovação foi temporariamente alterada de `média >= 6` para `média > 6` em `Calculadora.cs`. Isso quebrou dois testes que verificam o caso de borda (média exatamente 6.0): o teste de aprovação no limite e o teste de regressão da nota de corte. Após reverter a alteração, os testes voltaram a passar.
-
 ## Conclusão
 O uso de Docker garante que a aplicação roda da mesma forma em qualquer máquina, eliminando o problema de "funciona na minha máquina". A esteira de CI/CD automatiza build, análise estática e testes a cada mudança no código, detectando regressões (como a simulada acima) antes que cheguem a produção. Os testes automatizados (unitários, de regressão e de integração) garantem que a regra de negócio mais importante do sistema — o cálculo da média e a decisão de aprovação — continue correta ao longo do tempo.
