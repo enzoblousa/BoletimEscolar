@@ -16,7 +16,7 @@ public class CalculadoraTests
 
         //ACT
         var media = Calculadora.CalcularMedia(n1, n2);
-
+        
         //ASSERT
         Assert.Equal(7, media);
     }
@@ -58,6 +58,6 @@ public class CalculadoraTests
     public void CalcularSituacao_RegressaoDaNotaDeCorteSeis()
     {
         Assert.Equal("Aprovado", Calculadora.CalcularSituacao(6.0));
-        Assert.Equal("Reprovado", Calculadora.CalcularSituacao(5.00));
+        Assert.Equal("Reprovado", Calculadora.CalcularSituacao(7.00));
     }
 }

@@ -8,7 +8,6 @@ Este projeto produz resultados de teste em três lugares diferentes, cada um com
 |---|---|---|---|
 | `TestResults/` | Local (sua máquina) e dentro do job do CI | Não (`.gitignore`) | `dotnet test` |
 | `coveragereport/` | Raiz do repositório | Sim | `reportgenerator` (manual) |
-| `evidencias/` | Raiz do repositório | Sim | Manual (capturas de log) |
 | Artifact `evidencias-pipeline` | GitHub Actions (por execução) | Não (artifact, não arquivo) | Pipeline CI/CD |
 
 ## `TestResults/`
@@ -17,10 +16,12 @@ Pasta criada automaticamente quando você roda os testes localmente, e também r
 
 **Tecnologia:** [xUnit](https://xunit.net/) como framework de teste, executado pelo runner do VSTest (vem com o SDK do .NET), com [coverlet.collector](https://github.com/coverlet-coverage/coverlet) coletando a cobertura de código.
 
-**Como gerar:**
+**Como gerar (sempre a partir da raiz do repositório):**
 ```bash
 dotnet test MediaEscolar.sln --logger "trx;LogFileName=test-results.trx" --collect:"XPlat Code Coverage" --results-directory ./TestResults
 ```
+
+> ⚠️ **Atenção para não duplicar a pasta:** se você rodar `dotnet test` de dentro de `tests/MediaEscolar.Tests/` (em vez da raiz) ou sem o `--results-directory ./TestResults`, o .NET cria uma *segunda* pasta `TestResults/` ali dentro, com outro conjunto de GUIDs. Ela é só lixo local (também ignorada pelo git) e pode ser apagada com segurança — sempre rode o comando acima a partir da raiz do repositório para gerar uma única pasta `TestResults/` na raiz.
 
 **O que aparece dentro:**
 - `test-results.trx` — relatório dos testes (quantos passaram/falharam, tempo de execução, stack trace de falhas). Formato XML do Visual Studio Test Results.
@@ -44,18 +45,6 @@ reportgenerator -reports:"TestResults/**/coverage.cobertura.xml" -targetdir:"cov
 ```
 
 **Como visualizar:** abra `coveragereport/index.html` diretamente no navegador (duplo clique no arquivo, ou `start coveragereport/index.html` no Windows). Ele mostra o percentual de cobertura por classe (`MediaEscolar.Api_Calculadora.html`, `MediaEscolar.Api_Program.html`, etc.) com as linhas cobertas/não cobertas destacadas.
-
-## `evidencias/`
-
-Pasta com evidências manuais, em texto puro, do cenário de falha simulada e correção (ver seção "Falha simulada e correção" do `README.md`).
-
-**Tecnologia:** nenhuma — são logs de saída do `dotnet test` copiados manualmente para arquivo `.txt`.
-
-**Conteúdo:**
-- `falha-teste.txt` — saída do `dotnet test` no momento em que a regra de aprovação foi quebrada de propósito (testes falhando).
-- `correcao-teste.txt` — saída do `dotnet test` depois da correção (testes passando).
-
-**Como visualizar:** são arquivos de texto simples, basta abrir em qualquer editor.
 
 ## Artifact `evidencias-pipeline` (GitHub Actions)
 

@@ -293,7 +293,7 @@ var assemblies = [
       { "name": "AlunoResponse", "rp": "MediaEscolar.Api_AlunoResponse.html", "cl": 1, "ucl": 0, "cal": 1, "tl": 65, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "CadastrarAlunoRequest", "rp": "MediaEscolar.Api_CadastrarAlunoRequest.html", "cl": 1, "ucl": 0, "cal": 1, "tl": 65, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "MediaEscolar.Api.Models.Aluno", "rp": "MediaEscolar.Api_Aluno.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 9, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "MediaEscolar.Api.Models.Calculadora", "rp": "MediaEscolar.Api_Calculadora.html", "cl": 9, "ucl": 0, "cal": 9, "tl": 23, "cb": 6, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "MediaEscolar.Api.Models.Calculadora", "rp": "MediaEscolar.Api_Calculadora.html", "cl": 9, "ucl": 0, "cal": 9, "tl": 24, "cb": 6, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Program", "rp": "MediaEscolar.Api_Program.html", "cl": 42, "ucl": 9, "cal": 51, "tl": 65, "cb": 4, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "RegistrarNotasRequest", "rp": "MediaEscolar.Api_RegistrarNotasRequest.html", "cl": 1, "ucl": 0, "cal": 1, "tl": 65, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
     ]},

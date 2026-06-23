@@ -18,6 +18,7 @@ public static class Calculadora
 
     public static double CalcularMedia(double nota1, double nota2) => (nota1 + nota2) / 2;
 
+
     public static string CalcularSituacao(double media) =>
         media >= MediaAprovacao ? "Aprovado" : "Reprovado";
 }
